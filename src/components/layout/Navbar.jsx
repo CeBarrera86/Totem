@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
+import { AppBar, Container, Grid, styled, Toolbar, Typography, useTheme } from '@mui/material';
 
 // Estilo para el logo
 const LogoImage = styled('img')({
@@ -12,9 +7,20 @@ const LogoImage = styled('img')({
     height: 'auto',
 });
 
-// Estilo para el Navbar completo
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
+const StyledAppBar = styled(AppBar)(({ theme }) => {
+  const borderColorsForGradient = [
+    theme.palette.corpico.azul,
+    theme.palette.corpico.violeta,
+    theme.palette.corpico.rojo,
+    theme.palette.corpico.naranja,
+    theme.palette.corpico.amarillo,
+    theme.palette.corpico.verde,
+    theme.palette.corpico.celeste,
+  ];
+
+  return {
     backgroundColor: theme.palette.mode === 'dark' ? '#212529' : '#343a40',
+    color: 'white',
     position: 'fixed',
     top: 0,
     left: 0,
@@ -23,7 +29,13 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
     height: '75px',
     display: 'flex',
     justifyContent: 'center',
-}));
+    boxSizing: 'border-box',
+    borderBottom: '5px solid',
+    borderImageSlice: 1,
+    borderImageSource: `linear-gradient(to right, ${borderColorsForGradient.join(', ')})`,
+    borderRadius: 0,
+  };
+});
 
 const Navbar = () => {
     const [currentTime, setCurrentTime] = useState(new Date());

@@ -1,26 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
+import React, { useState } from 'react';
+import { Container, Grid, Box, styled, Typography } from '@mui/material';
 import { MdWeb, MdSmartphone } from 'react-icons/md';
 
-// Estilo para el Footer
-const StyledFooter = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.mode === 'dark' ? '#212529' : '#343a40',
-  color: 'white',
-  position: 'fixed',
-  bottom: 0,
-  left: 0,
-  right: 0,
-  height: '75px',
-  padding: theme.spacing(2),
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  zIndex: theme.zIndex.appBar,
-}));
+const StyledFooter = styled(Box)(({ theme }) => {
+  const borderColorsForGradient = [
+    theme.palette.corpico.azul,
+    theme.palette.corpico.violeta,
+    theme.palette.corpico.rojo,
+    theme.palette.corpico.naranja,
+    theme.palette.corpico.amarillo,
+    theme.palette.corpico.verde,
+    theme.palette.corpico.celeste,
+  ];
+
+  return {
+    backgroundColor: theme.palette.mode === 'dark' ? '#212529' : '#343a40',
+    color: 'white',
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    height: '75px',
+    padding: theme.spacing(2),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: theme.zIndex.appBar,
+    boxSizing: 'border-box',
+    borderTop: '5px solid',
+    borderImageSlice: 1,
+    borderImageSource: `linear-gradient(to right, ${borderColorsForGradient.join(', ')})`,
+  };
+});
 
 // Estilo para el marquee
 const MarqueeContainer = styled(Box)({
@@ -40,15 +51,12 @@ const MarqueeContainer = styled(Box)({
 });
 
 const Footer = () => {
-  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-
-  useEffect(() => {
-  }, []);
+  const [currentYear] = useState(new Date().getFullYear());
 
   return (
     <StyledFooter>
       <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-        <Grid container alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+        <Grid container alignItems="center" justifyContent="space-between" sx={{ width: '100%' }} >
           {/* Columna 1: Copyright */}
           <Grid sx={{
             display: { xs: 'none', sm: 'flex' },
@@ -57,7 +65,7 @@ const Footer = () => {
             width: { sm: '50%' },
           }}>
             <Typography variant="body2" color="inherit">
-              Corpico &copy; <span id="year">{currentYear}</span>. Turnero creado por <strong>Sección Sistemas</strong>.
+              Corpico &copy; <span>{currentYear}</span>. Turnero creado por <strong>Sección Sistemas</strong>.
             </Typography>
           </Grid>
           {/* Columna 2: Marquee */}
