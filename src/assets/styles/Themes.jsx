@@ -49,14 +49,15 @@ const appTheme = createTheme({
       light: '#e85a4a',
       dark: '#b32010',
     },
-
     background: {
-      default: '#ffffff',
-      paper: '#a5a5a5',
+      default: '#e0e0e0',
+      paper: '#ffffff',
+      layout: 'rgba(31, 31, 31, 1)'
     },
     text: {
       primary: 'rgba(255, 255, 255, 0.87)',
       secondary: 'rgba(255, 255, 255, 0.6)',
+      third: 'rgba(31, 31, 31, 1)',
       disabled: 'rgba(255, 255, 255, 0.38)',
     },
     grey: {
@@ -109,8 +110,8 @@ const appTheme = createTheme({
     },
     MuiCardHeader: {
       styleOverrides: {
-        root: {
-          background: `linear-gradient(60deg, ${corpicoPalette.violeta}, ${corpicoPalette.azul})`,
+        root: ({ theme }) => ({
+          background: `linear-gradient(60deg, ${theme.palette.secondary.dark}, ${theme.palette.secondary.main})`,
           boxShadow: '0 4px 20px 0 rgba(0, 0, 0, .14), 0 7px 10px -5px rgba(156, 39, 176, .4)',
           borderTopLeftRadius: '20px',
           borderTopRightRadius: '20px',
@@ -119,7 +120,7 @@ const appTheme = createTheme({
           alignItems: 'center',
           justifyContent: 'center',
           color: '#fff',
-        },
+        }),
       },
     },
     MuiCard: {

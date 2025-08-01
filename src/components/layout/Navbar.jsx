@@ -19,7 +19,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => {
   ];
 
   return {
-    backgroundColor: theme.palette.mode === 'dark' ? '#212529' : '#343a40',
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.layout : theme.palette.background.paper,
     color: 'white',
     position: 'fixed',
     top: 0,

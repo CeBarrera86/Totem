@@ -1,16 +1,15 @@
-// src/components/layout/ContenedorPrincipal.jsx
 import React from 'react';
 import { Box, Container } from '@mui/material';
-import { useTheme } from '@mui/material/styles'; // Importa useTheme
+import { useTheme } from '@mui/material/styles';
 
 const ContenedorPrincipal = ({ children }) => {
-  const theme = useTheme(); // Accede al tema
+  const theme = useTheme();
 
   return (
     <Box
       sx={{
-        bgcolor: theme.palette.background.default, // Usando color de fondo del tema
-        minHeight: 'calc(100vh - 150px)', // Ajusta según el tamaño de tu header/footer
+        bgcolor: theme.palette.background.default,
+        minHeight: 'calc(100vh - 150px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

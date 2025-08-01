@@ -30,7 +30,7 @@ const Keypad = ({ onNumberClick, onBackspace }) => {
         sx={{
           gridColumn: '2 / span 2',
           bgcolor: '#dc3545',
-          fontSize: '30px',
+          fontSize: '40px',
           fontWeight: 'bold',
           '&:hover': { bgcolor: '#c82333' },
         }}

@@ -1,29 +1,26 @@
-// src/components/botones/BotonVolver.jsx
 import React from 'react';
 import { Button } from '@mui/material';
-import { useTheme } from '@mui/material/styles'; // Importa useTheme
+import { styled } from '@mui/material/styles';
+
+const StyledBotonVolver = styled(Button)(({ theme }) => ({
+  borderRadius: theme.spacing(2),
+  margin: theme.spacing(1),
+  boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+  transition: 'transform 0.2s, box-shadow 0.2s',
+  '&:hover': {
+    transform: 'translateY(-5px)',
+    boxShadow: '0 12px 20px rgba(0,0,0,0.3)',
+  },
+  fontSize: '1.5rem',
+  width: 'auto',
+  minWidth: '300px',
+}));
 
 const BotonVolver = ({ onClick, sx = {}, ...props }) => {
-  const theme = useTheme(); // Accede al tema
-
   return (
-    <Button
-      variant="contained"
-      onClick={onClick}
-      sx={{
-        bgcolor: theme.palette.error.main, // Usando color del tema
-        color: theme.palette.error.contrastText, // Usando color del tema
-        fontSize: '1.5rem',
-        borderRadius: 2,
-        '&:hover': { bgcolor: theme.palette.error.dark }, // Usando color del tema
-        width: 'auto',
-        minWidth: '300px',
-        ...sx
-      }}
-      {...props}
-    >
+    <StyledBotonVolver variant="contained" color="error" onClick={onClick} sx={sx} {...props} >
       VOLVER
-    </Button>
+    </StyledBotonVolver>
   );
 };
 

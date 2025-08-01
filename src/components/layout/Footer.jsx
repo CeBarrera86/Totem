@@ -14,7 +14,7 @@ const StyledFooter = styled(Box)(({ theme }) => {
   ];
 
   return {
-    backgroundColor: theme.palette.mode === 'dark' ? '#212529' : '#343a40',
+    backgroundColor: theme.palette.mode === 'dark' ? theme.palette.background.layout : theme.palette.background.paper,
     color: 'white',
     position: 'fixed',
     bottom: 0,
@@ -33,16 +33,9 @@ const StyledFooter = styled(Box)(({ theme }) => {
   };
 });
 
-// Estilo para el marquee
-const MarqueeContainer = styled(Box)({
+const MarqueeContent = styled(Box)({
+  display: 'flex',
   whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  display: 'inline-block',
-  '& span': {
-    display: 'inline-flex',
-    alignItems: 'center',
-    marginRight: '3em',
-  },
   animation: 'marquee 15s linear infinite',
   '@keyframes marquee': {
     '0%': { transform: 'translateX(100%)' },
@@ -52,40 +45,35 @@ const MarqueeContainer = styled(Box)({
 
 const Footer = () => {
   const [currentYear] = useState(new Date().getFullYear());
+  // Elementos del marquee
+  const marqueeItems = (
+    <>
+      <span style={{ display: 'inline-flex', alignItems: 'center', marginRight: '3em' }}>
+        <MdWeb style={{ marginRight: '0.5em' }} />
+        Sitio WEB ( www.corpico.com.ar )
+      </span>
+      <span style={{ display: 'inline-flex', alignItems: 'center', marginRight: '3em' }}>
+        <MdSmartphone style={{ marginRight: '0.5em' }} />
+        Corpico DIGITAL ( corpicoapp.web.app )
+      </span>
+    </>
+  );
 
   return (
     <StyledFooter>
       <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
         <Grid container alignItems="center" justifyContent="space-between" sx={{ width: '100%' }} >
           {/* Columna 1: Copyright */}
-          <Grid sx={{
-            display: { xs: 'none', sm: 'flex' },
-            justifyContent: 'center',
-            alignItems: 'center',
-            width: { sm: '50%' },
-          }}>
+          <Grid sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'center', alignItems: 'center', width: { sm: '50%' }, }}>
             <Typography variant="body2" color="inherit">
               Corpico &copy; <span>{currentYear}</span>. Turnero creado por <strong>Sección Sistemas</strong>.
             </Typography>
           </Grid>
-          {/* Columna 2: Marquee */}
-          <Grid sx={{
-            display: 'flex',
-            justifyContent: { xs: 'center', sm: 'flex-end' },
-            alignItems: 'center',
-            width: { xs: '100%', sm: '50%' },
-            overflow: 'hidden',
-          }}>
-            <MarqueeContainer>
-              <span className="d-flex align-items-center">
-                <MdWeb style={{ marginRight: '0.5em' }} />
-                Sitio WEB ( www.corpico.com.ar )
-              </span>
-              <span className="d-flex align-items-center">
-                <MdSmartphone style={{ marginRight: '0.5em' }} />
-                Corpico DIGITAL ( corpicoapp.web.app )
-              </span>
-            </MarqueeContainer>
+          {/* Columna 2: Marquee - Este Grid actúa como la "ventana" de visualización */}
+          <Grid sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-end' }, alignItems: 'center', width: { xs: '100%', sm: '50%' }, overflow: 'hidden', }}>
+            <MarqueeContent>
+              {marqueeItems}
+            </MarqueeContent>
           </Grid>
         </Grid>
       </Container>

@@ -1,53 +1,64 @@
-// src/components/input/Dni.jsx
-import React from 'react';
-import { TextField, FormHelperText } from '@mui/material';
+import React, { useState } from 'react';
+import { TextField, FormHelperText, Box } from '@mui/material';
 import { Controller } from 'react-hook-form';
-import { useTheme } from '@mui/material/styles'; // Importa useTheme
+import { useTheme } from '@mui/material/styles';
 
 const DniInput = ({ control, errors, currentDniValue }) => {
-  const theme = useTheme(); // Accede al tema
+  const theme = useTheme();
+  const [isFocused, setIsFocused] = useState(false);
 
   return (
-    <div>
-      <Controller
-        name="dni"
-        control={control}
+    <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      <Controller name="dni" control={control}
         render={({ field }) => (
-          <TextField
-            {...field}
+          <TextField {...field}
             value={currentDniValue}
             inputProps={{
               readOnly: true,
               style: {
                 textAlign: 'center',
-                fontSize: '3.0rem',
-                letterSpacing: '0.1em'
+                fontSize: '6rem',
+                fontWeight: 'bolder',
+                letterSpacing: '0.1em',
+                color: theme.palette.common.white,
+                outline: 'none',
               }
             }}
             fullWidth
             variant="outlined"
             error={!!errors.dni}
+            autoFocus
+            onFocus={() => setIsFocused(true)}
+            onBlur={() => setIsFocused(false)}
             sx={{
-              input: {
-                bgcolor: theme.palette.success.dark, // Usando color del tema
-                color: theme.palette.common.white, // Usando color del tema
-                borderRadius: 1,
-                p: 2,
-                height: 'auto'
+              '& .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'transparent',
               },
-              mb: errors.dni ? 0.5 : 2,
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'transparent',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: 'transparent',
+              },
+              backgroundColor: 'transparent',
             }}
           />
         )}
       />
+      {/* Línea debajo del DNI */}
+      <Box sx={{
+        width: 'calc(100% - 32px)',
+        height: '2px',
+        bgcolor: isFocused ? theme.palette.corpico.naranja : 'white',
+        mb: errors.dni ? 0.5 : 1,
+      }} />
+      {/* Mensaje de error de validación */}
       {errors.dni && (
-        <FormHelperText
-          sx={{ color: theme.palette.error.main, textAlign: 'center', mt: 1, mb: 1.5, fontSize: '0.875rem' }} // Usando color del tema
-        >
+        <FormHelperText sx={{ color: theme.palette.error.main, textAlign: 'center', mt: 0.5, fontSize: '0.875rem' }} >
           {errors.dni.message}
         </FormHelperText>
       )}
-    </div>
+    </Box>
   );
 };
 

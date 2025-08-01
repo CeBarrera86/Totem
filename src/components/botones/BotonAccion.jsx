@@ -1,7 +1,6 @@
-// src/components/botones/BotonAccion.jsx
 import React from 'react';
 import { Button } from '@mui/material';
-import { styled, useTheme } from '@mui/material/styles'; // Importa useTheme
+import { styled } from '@mui/material/styles';
 
 const StyledBotonAccion = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(2),
@@ -12,21 +11,11 @@ const StyledBotonAccion = styled(Button)(({ theme }) => ({
     transform: 'translateY(-5px)',
     boxShadow: '0 12px 20px rgba(0,0,0,0.3)',
   },
-  bgcolor: theme.palette.success.main, // Usando color del tema
-  color: theme.palette.success.contrastText, // Usando color del tema
-  '&:hover': {
-    bgcolor: theme.palette.success.dark, // Usando color del tema
-  },
 }));
 
-const BotonAccion = ({ children, onClick, sx, ...props }) => {
+const BotonAccion = ({ children, onClick, sx, buttonColor = "success", ...props }) => {
   return (
-    <StyledBotonAccion
-      variant="contained"
-      onClick={onClick}
-      sx={sx}
-      {...props}
-    >
+    <StyledBotonAccion variant="contained" color={buttonColor} onClick={onClick} sx={sx} {...props} >
       {children}
     </StyledBotonAccion>
   );
