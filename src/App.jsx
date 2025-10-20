@@ -2,9 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
-import Home from './views/Home';
-import Secciones from './views/Secciones';
-import Tramites from './views/Tramites';
+import Index from './views/Index';
+// import Home from './views/Home';
+// import Secciones from './views/Secciones';
+// import Tramites from './views/Tramites';
 import Box from '@mui/material/Box';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -19,9 +20,10 @@ function App() {
           <Navbar />
           <Box component="main" sx={{ flexGrow: 1, mt: '75px', mb: '75px' }}>
             <Routes>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<Index />} />
+              {/* <Route path="/" element={<Home />} />
               <Route path="/secciones" element={<Secciones />} />
-              <Route path="/tramites" element={<Tramites />} />
+              <Route path="/tramites" element={<Tramites />} /> */}
             </Routes>
           </Box>
           <Footer />
