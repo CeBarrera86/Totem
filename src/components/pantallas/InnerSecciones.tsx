@@ -21,18 +21,23 @@ const InnerSecciones = ({ sectores, cliente, onClick, onBack }: InnerSeccionesPr
 
   const tituloCard = (
     <Box>
-      <Typography fontSize="2rem" fontWeight="bold" align="center" color="inherit">
+      <Typography
+        fontWeight="bold"
+        align="center"
+        color="inherit"
+        sx={{ fontSize: { xs: '1.6rem', sm: '1.9rem', md: '2rem' } }}
+      >
         Bienvenido/a
       </Typography>
-      <Typography fontSize="2rem" align="center" color="inherit" sx={{ mt: 1 }}>
+      <Typography align="center" color="inherit" sx={{ mt: 1, fontSize: { xs: '1.4rem', sm: '1.7rem', md: '2rem' } }}>
         {clienteNombreCompleto}
       </Typography>
     </Box>
   );
 
   return (
-    <Grid container spacing={4} alignItems="stretch" justifyContent="center" sx={{ width: '100%', height: '100%' }}>
-      <Grid item xs={12} md={8}>
+    <Grid container spacing={3} alignItems="stretch" justifyContent="center" sx={{ width: '100%', height: '100%' }}>
+      <Grid size={{ xs: 12, md: 8 }}>
         <TarjetaPrincipal titulo={tituloCard}>
           <Typography align="center" variant="h6" sx={{ color: theme.palette.text.third }}>
             SACAR TURNO PARA:
@@ -45,17 +50,21 @@ const InnerSecciones = ({ sectores, cliente, onClick, onBack }: InnerSeccionesPr
               alignItems: 'center',
               flexWrap: 'wrap',
               width: '100%',
+              gap: { xs: 2, sm: 2.5 },
             }}
           >
             {filteredSectors.map((sector) => (
               <BotonAccion
                 key={sector.id}
                 sx={{
-                  height: '160px',
+                  height: { xs: '90px', sm: '110px', md: '130px' },
                   flexGrow: 1,
                   flexBasis: { xs: '100%', sm: 'calc(50% - 16px)' },
                   maxWidth: { xs: '100%', sm: 'calc(50% - 16px)' },
-                  fontSize: sector.nombre.toUpperCase() === 'CAJAS' ? '65px' : '40px',
+                  fontSize:
+                    sector.nombre.toUpperCase() === 'CAJAS'
+                      ? { xs: '30px', sm: '42px', md: '52px' }
+                      : { xs: '22px', sm: '30px', md: '36px' },
                 }}
                 onClick={(e) => onClick(sector.id, e)}
               >
@@ -63,7 +72,9 @@ const InnerSecciones = ({ sectores, cliente, onClick, onBack }: InnerSeccionesPr
               </BotonAccion>
             ))}
           </Box>
-          <BotonVolver onClick={onBack} />
+          <Box sx={{ display: 'flex', justifyContent: 'center', mt: { xs: 1, sm: 2 } }}>
+            <BotonVolver onClick={onBack} sx={{ width: '100%', maxWidth: { xs: '100%', sm: '320px', md: '360px' } }} />
+          </Box>
         </TarjetaPrincipal>
       </Grid>
     </Grid>

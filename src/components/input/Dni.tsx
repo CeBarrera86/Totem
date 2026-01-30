@@ -30,9 +30,7 @@ const DniInput = ({ currentDniValue }: DniInputProps) => {
               readOnly: true,
               style: {
                 textAlign: 'center',
-                fontSize: '6rem',
                 fontWeight: 'bolder',
-                letterSpacing: '0.1em',
                 color: theme.palette.common.white,
                 outline: 'none',
               },
@@ -44,6 +42,10 @@ const DniInput = ({ currentDniValue }: DniInputProps) => {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             sx={{
+              '& input': {
+                fontSize: { xs: '3rem', sm: '4rem', md: '6rem' },
+                letterSpacing: { xs: '0.05em', sm: '0.08em', md: '0.1em' },
+              },
               '& .MuiOutlinedInput-notchedOutline': {
                 borderColor: 'transparent',
               },

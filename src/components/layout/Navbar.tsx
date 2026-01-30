@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
-import { AppBar, Container, Grid, styled, Toolbar, Typography } from '@mui/material';
+import { AppBar, Container, Grid, styled, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import corpicoLogo from '@/assets/img/Corpico_logo.svg';
 
 // Estilo para el logo
-const LogoImage = styled('img')({
-  width: '50%',
+const LogoImage = styled('img')(({ theme }) => ({
+  width: '90px',
   height: 'auto',
-});
+  [theme.breakpoints.up('sm')]: {
+    width: '110px',
+  },
+  [theme.breakpoints.up('md')]: {
+    width: '140px',
+  },
+}));
 
 const StyledAppBar = styled(AppBar)(({ theme }) => {
   const borderColorsForGradient = [
@@ -28,7 +34,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => {
     left: 0,
     right: 0,
     zIndex: theme.zIndex.appBar,
-    height: '75px',
+    height: '90px',
     display: 'flex',
     justifyContent: 'center',
     boxSizing: 'border-box',
@@ -36,11 +42,19 @@ const StyledAppBar = styled(AppBar)(({ theme }) => {
     borderImageSlice: 1,
     borderImageSource: `linear-gradient(to right, ${borderColorsForGradient.join(', ')})`,
     borderRadius: 0,
+    [theme.breakpoints.down('md')]: {
+      height: '84px',
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '78px',
+    },
   };
 });
 
 const Navbar = () => {
   const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  const theme = useTheme();
+  const isCompact = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const timerId = setInterval(() => {
@@ -53,27 +67,30 @@ const Navbar = () => {
     return date.toLocaleTimeString('es-AR', {
       hour: '2-digit',
       minute: '2-digit',
-      second: '2-digit',
       hour12: false,
     });
   };
 
   const formatDate = (date: Date) => {
-    return date.toLocaleDateString('es-AR', {
-      weekday: 'short',
-      day: '2-digit',
-      month: 'short',
-      year: 'numeric',
-    });
+    return date.toLocaleDateString('es-AR',
+      isCompact
+        ? { day: '2-digit', month: 'short' }
+        : { weekday: 'short', day: '2-digit', month: 'short', year: '2-digit' }
+    );
   };
 
   return (
     <StyledAppBar>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <Grid container alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+        <Toolbar disableGutters sx={{ minHeight: { xs: 78, sm: 84, md: 90 } }}>
+          <Grid
+            container
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ width: '100%', flexWrap: 'wrap', rowGap: { xs: 0.5, sm: 0 } }}
+          >
             {/* Columna 1: Logo */}
-            <Grid sx={{ width: { xs: '40%', sm: '33%' }, display: 'flex', justifyContent: 'flex-start' }}>
+            <Grid sx={{ width: { xs: '30%', sm: '25%', md: '33%' }, display: 'flex', justifyContent: 'flex-start' }}>
               <Typography
                 variant="h6"
                 noWrap
@@ -93,16 +110,18 @@ const Navbar = () => {
             </Grid>
 
             {/* Columna 2: Título central */}
-            <Grid sx={{ width: { xs: '60%', sm: '33%' }, display: 'flex', justifyContent: 'center' }}>
+            <Grid sx={{ width: { xs: '70%', sm: '50%', md: '33%' }, display: 'flex', justifyContent: 'center' }}>
               <Typography
                 variant="h5"
-                noWrap
+                noWrap={false}
                 component="div"
                 sx={{
                   fontWeight: 700,
                   color: 'inherit',
                   textDecoration: 'none',
                   textAlign: 'center',
+                  fontSize: { xs: '1rem', sm: '1.2rem', md: '1.4rem' },
+                  whiteSpace: { xs: 'normal', sm: 'nowrap' },
                 }}
               >
                 <strong>Gestión de Turnos</strong>
@@ -110,8 +129,19 @@ const Navbar = () => {
             </Grid>
 
             {/* Columna 3: Hora actual */}
-            <Grid sx={{ width: { sm: '33%' }, display: { xs: 'none', sm: 'flex' }, justifyContent: 'flex-end' }}>
-              <Typography variant="h6" noWrap component="div" sx={{ color: 'inherit' }}>
+            <Grid
+              sx={{
+                width: { xs: '100%', sm: '25%', md: '33%' },
+                display: 'flex',
+                justifyContent: { xs: 'center', sm: 'flex-end' },
+              }}
+            >
+              <Typography
+                variant="h6"
+                noWrap
+                component="div"
+                sx={{ color: 'inherit', fontSize: { xs: '0.75rem', sm: '0.9rem', md: '1.05rem' } }}
+              >
                 <strong>
                   {formatDate(currentTime)} - {formatTime(currentTime)}
                 </strong>

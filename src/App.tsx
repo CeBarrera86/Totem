@@ -18,14 +18,29 @@ const App = () => {
     <ThemeProvider theme={appTheme}>
       <CssBaseline />
       <Router>
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            minHeight: '100vh',
+            '--appHeaderHeight': { xs: '78px', sm: '84px', md: '90px' },
+            '--appFooterHeight': { xs: '78px', sm: '84px', md: '90px' },
+          }}
+        >
           <Navbar />
           <NetworkStatus />
           <GlobalErrorBanner />
-          <Box component="main" sx={{ flexGrow: 1, mt: '75px', mb: '75px' }}>
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              mt: 'var(--appHeaderHeight)',
+              mb: 'var(--appFooterHeight)',
+            }}
+          >
             <Routes>
-              <Route path="/" element={<Home />} />
               <Route path="/index" element={<Index />} />
+              <Route path="/" element={<Home />} />
               <Route path="/secciones" element={<Secciones />} />
               <Route path="/tramites" element={<Tramites />} />
             </Routes>

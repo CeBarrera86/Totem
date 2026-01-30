@@ -20,7 +20,7 @@ const StyledFooter = styled(Box)(({ theme }) => {
     bottom: 0,
     left: 0,
     right: 0,
-    height: '75px',
+    height: '90px',
     padding: theme.spacing(2),
     display: 'flex',
     alignItems: 'center',
@@ -30,6 +30,13 @@ const StyledFooter = styled(Box)(({ theme }) => {
     borderTop: '5px solid',
     borderImageSlice: 1,
     borderImageSource: `linear-gradient(to right, ${borderColorsForGradient.join(', ')})`,
+    [theme.breakpoints.down('md')]: {
+      height: '84px',
+      padding: theme.spacing(1.5),
+    },
+    [theme.breakpoints.down('sm')]: {
+      height: '78px',
+    },
   };
 });
 
@@ -49,7 +56,8 @@ const Footer = () => {
   const marqueeItemSx = {
     display: 'inline-flex',
     alignItems: 'center',
-    mr: 6,
+    mr: 3,
+    fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.85rem' },
   };
 
   const iconSx = { mr: 1 };
@@ -74,10 +82,22 @@ const Footer = () => {
   return (
     <StyledFooter>
       <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-        <Grid container alignItems="center" justifyContent="space-between" sx={{ width: '100%' }}>
+        <Grid
+          container
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ width: '100%', flexDirection: { xs: 'column', sm: 'column', md: 'row' }, rowGap: { xs: 0.5, sm: 0.5, md: 0 } }}
+        >
           {/* Columna 1: Copyright */}
-          <Grid sx={{ display: { xs: 'none', sm: 'flex' }, justifyContent: 'center', alignItems: 'center', width: { sm: '50%' } }}>
-            <Typography variant="body2" color="inherit">
+          <Grid
+            sx={{
+              display: { xs: 'flex', sm: 'flex' },
+              justifyContent: { xs: 'center', md: 'flex-start' },
+              alignItems: 'center',
+              width: { xs: '100%', sm: '100%', md: '50%' },
+            }}
+          >
+            <Typography variant="body2" color="inherit" sx={{ fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.85rem' }, textAlign: 'center' }}>
               Corpico &copy; <span>{currentYear}</span>. Turnero creado por <strong>Sección Sistemas</strong>.
             </Typography>
           </Grid>
@@ -85,9 +105,9 @@ const Footer = () => {
           <Grid
             sx={{
               display: 'flex',
-              justifyContent: { xs: 'center', sm: 'flex-end' },
+              justifyContent: { xs: 'center', sm: 'center', md: 'flex-end' },
               alignItems: 'center',
-              width: { xs: '100%', sm: '50%' },
+              width: { xs: '100%', sm: '100%', md: '50%' },
               overflow: 'hidden',
             }}
           >

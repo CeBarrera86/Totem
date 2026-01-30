@@ -13,11 +13,11 @@ const ContenedorPrincipal = ({ children }: ContenedorPrincipalProps) => {
     <Box
       sx={{
         bgcolor: theme.palette.background.default,
-        minHeight: 'calc(100vh - 150px)',
+        minHeight: 'calc(100vh - var(--appHeaderHeight) - var(--appFooterHeight))',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        py: { xs: 2, md: 4 },
+        py: { xs: 1.5, sm: 2, md: 3 },
       }}
     >
       <Container maxWidth="lg" sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', height: '100%' }}>
