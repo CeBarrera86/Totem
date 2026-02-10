@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useCallback, useEffect, useState, type MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { handleTicket } from '@/handlers/handleTicket';
@@ -14,11 +14,15 @@ export const useIndexController = () => {
   const [sectores, setSectores] = useState<Sector[]>([]);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchSectores = useCallback(() => {
     getSectores()
       .then(setSectores)
       .catch((err: Error) => setError(`Error al cargar secciones: ${err.message}`));
   }, []);
+
+  useEffect(() => {
+    fetchSectores();
+  }, [fetchSectores]);
 
   const handleSectionClick = (sectorId: number, event?: MouseEvent<HTMLButtonElement>) => {
     if (event?.currentTarget) event.currentTarget.blur();
@@ -33,7 +37,7 @@ export const useIndexController = () => {
 
   const handleCloseTicketDialog = () => {
     setOpenTicketDialog(false);
-    navigate('/');
+    navigate('/index');
   };
 
   return {

@@ -14,6 +14,7 @@ Totem para generación de tickets de turnos. Proyecto interno de la cooperativa 
 3) Variables de entorno
 	- Copiar .env-ejemplo a .env
 	- Configurar `VITE_DIR`, `VITE_PORT` y `VITE_API_KEY`
+	- Si el backend exige autorización Totem: `VITE_TOTEM_TOKEN`
 	- Opcional: `VITE_API_URL` (URL completa) y `VITE_API_TIMEOUT` (ms)
 4) Ejecutar: `npm run dev`
 

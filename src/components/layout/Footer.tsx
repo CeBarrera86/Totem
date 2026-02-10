@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Container, Grid, Box, styled, Typography } from '@mui/material';
+import { Container, Box, styled, Typography } from '@mui/material';
 import { MdWeb, MdSmartphone } from 'react-icons/md';
 
 const StyledFooter = styled(Box)(({ theme }) => {
@@ -40,80 +40,34 @@ const StyledFooter = styled(Box)(({ theme }) => {
   };
 });
 
-const MarqueeContent = styled(Box)({
-  display: 'flex',
-  whiteSpace: 'nowrap',
-  animation: 'marquee 15s linear infinite',
-  '@keyframes marquee': {
-    '0%': { transform: 'translateX(100%)' },
-    '100%': { transform: 'translateX(-100%)' },
-  },
-});
-
 const Footer = () => {
   const [currentYear] = useState<number>(new Date().getFullYear());
 
-  const marqueeItemSx = {
+  const linkItemSx = {
     display: 'inline-flex',
     alignItems: 'center',
-    mr: 3,
+    gap: 0.75,
     fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.85rem' },
+    color: 'inherit',
   };
-
-  const iconSx = { mr: 1 };
-
-  const marqueeItems = (
-    <>
-      <Box component="span" sx={marqueeItemSx}>
-        <Box component="span" sx={iconSx}>
-          <MdWeb />
-        </Box>
-        Sitio WEB ( www.corpico.com.ar )
-      </Box>
-      <Box component="span" sx={marqueeItemSx}>
-        <Box component="span" sx={iconSx}>
-          <MdSmartphone />
-        </Box>
-        Corpico DIGITAL ( corpicoapp.web.app )
-      </Box>
-    </>
-  );
 
   return (
     <StyledFooter>
       <Container maxWidth="xl" sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-        <Grid
-          container
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ width: '100%', flexDirection: { xs: 'column', sm: 'column', md: 'row' }, rowGap: { xs: 0.5, sm: 0.5, md: 0 } }}
-        >
-          {/* Columna 1: Copyright */}
-          <Grid
-            sx={{
-              display: { xs: 'flex', sm: 'flex' },
-              justifyContent: { xs: 'center', md: 'flex-start' },
-              alignItems: 'center',
-              width: { xs: '100%', sm: '100%', md: '50%' },
-            }}
-          >
-            <Typography variant="body2" color="inherit" sx={{ fontSize: { xs: '0.7rem', sm: '0.75rem', md: '0.85rem' }, textAlign: 'center' }}>
-              Corpico &copy; <span>{currentYear}</span>. Turnero creado por <strong>Sección Sistemas</strong>.
-            </Typography>
-          </Grid>
-          {/* Columna 2: Marquee - Este Grid actúa como la "ventana" de visualización */}
-          <Grid
-            sx={{
-              display: 'flex',
-              justifyContent: { xs: 'center', sm: 'center', md: 'flex-end' },
-              alignItems: 'center',
-              width: { xs: '100%', sm: '100%', md: '50%' },
-              overflow: 'hidden',
-            }}
-          >
-            <MarqueeContent>{marqueeItems}</MarqueeContent>
-          </Grid>
-        </Grid>
+        <Box sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0.75 }}>
+          <Box sx={{ display: 'flex', gap: { xs: 2, sm: 3 }, flexWrap: 'wrap', justifyContent: 'center' }}>
+            <Box component="span" sx={linkItemSx}>
+              <MdWeb /> www.corpico.com.ar
+            </Box>
+            <Box component="span" sx={linkItemSx}>
+              <MdSmartphone /> corpicoapp.web.app
+            </Box>
+          </Box>
+          <Box sx={{ height: '1px', width: { xs: '70%', sm: '55%', md: '40%' }, bgcolor: 'rgba(255,255,255,0.35)' }} />
+          <Typography variant="body2" color="inherit" sx={{ fontSize: { xs: '0.68rem', sm: '0.72rem', md: '0.8rem' }, textAlign: 'center' }}>
+            Corpico &copy; <span>{currentYear}</span>. Turnero creado por <strong>Sección Sistemas</strong>.
+          </Typography>
+        </Box>
       </Container>
     </StyledFooter>
   );

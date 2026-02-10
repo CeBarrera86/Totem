@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useCallback, useEffect, useState, type MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useDatosCliente from '@/hooks/useDatosCliente';
@@ -16,11 +16,15 @@ export const useSeccionesController = () => {
   const [openTicketDialog, setOpenTicketDialog] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchSectores = useCallback(() => {
     getSectores()
       .then(setSectores)
       .catch((err: Error) => setError(`Error al cargar secciones: ${err.message}`));
   }, []);
+
+  useEffect(() => {
+    fetchSectores();
+  }, [fetchSectores]);
 
   const handleSectionClick = async (sectorId: number, event?: MouseEvent<HTMLButtonElement>) => {
     if (event?.currentTarget) event.currentTarget.blur();

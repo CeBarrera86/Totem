@@ -1,7 +1,7 @@
 import type { Ticket } from '@/models/ticket';
 import { httpClient, normalizeApiError } from '@/services/httpClient';
 
-const BASE_URL = '/Ticket';
+const BASE_URL = '/Ticket/totem';
 
 export const generarTicket = async (clienteId: number, sectorId: number): Promise<Ticket> => {
   try {

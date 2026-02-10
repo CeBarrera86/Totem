@@ -1,9 +1,11 @@
 import type { MouseEvent } from 'react';
-import { Box, Typography } from '@mui/material';
+import { Box, ButtonBase, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
+import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
+import ReportProblemRoundedIcon from '@mui/icons-material/ReportProblemRounded';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 
-import TarjetaPrincipal from '@/components/tarjeta/TarjetaPrincipal';
-import BotonAccion from '@/components/botones/BotonAccion';
 import { useSectoresFiltrados } from '@/hooks/useSectoresFiltrados';
 import type { Sector } from '@/models/sector';
 
@@ -19,46 +21,141 @@ const InnerIndex = ({ sectores, onClick }: InnerIndexProps) => {
     .map((id) => filteredSectors.find((sector) => sector.id === id))
     .filter((sector): sector is Sector => Boolean(sector));
 
-  const tituloCard = (
-    <Box>
-      <Typography
-        fontWeight="bold"
-        align="center"
-        color="inherit"
-        sx={{ fontSize: { xs: '1.6rem', sm: '1.9rem', md: '2rem' } }}
-      >
-        Bienvenido/a
-      </Typography>
-    </Box>
-  );
+  const sectorStyle = (sectorId: number) => {
+    switch (sectorId) {
+      case 1:
+        return { color: theme.palette.corpico.verde, icon: PaymentsRoundedIcon };
+      case 3:
+        return { color: theme.palette.corpico.violeta, icon: PeopleAltRoundedIcon };
+      case 4:
+        return { color: theme.palette.corpico.azul, icon: ReportProblemRoundedIcon };
+      default:
+        return { color: theme.palette.grey[500], icon: PaymentsRoundedIcon };
+    }
+  };
 
   return (
-    <Box sx={{ maxWidth: { xs: '100%', sm: '620px', md: '700px' }, width: '100%', mx: 'auto' }}>
-      <TarjetaPrincipal
-        titulo={tituloCard}
-        sx={{ minHeight: { xs: 420, sm: 480, md: 520 }, justifyContent: 'space-between' }}
-      >
-        <Typography align="center" variant="h6" sx={{ color: theme.palette.text.third }}>
-          SACAR TURNO PARA:
+    <Box sx={{ maxWidth: { xs: '100%', sm: '520px', md: '560px' }, width: '100%', mx: 'auto', px: { xs: 1.5, sm: 0 } }}>
+      <Box sx={{ textAlign: 'center', mb: { xs: 3, sm: 3.5 } }}>
+        <Typography
+          fontWeight={700}
+          color={theme.palette.text.third}
+          sx={{ fontSize: { xs: '1.6rem', sm: '1.9rem', md: '2.1rem' } }}
+        >
+          ¡Bienvenido/a!
         </Typography>
+        <Typography
+          sx={{
+            color: theme.palette.grey[700],
+            fontSize: { xs: '0.98rem', sm: '1.08rem' },
+            fontWeight: 500,
+            mt: 0.5,
+          }}
+        >
+          ¿A qué área deseas dirigirte?
+        </Typography>
+      </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 2.5, sm: 3.5 }, alignItems: 'center', mt: 1 }}>
-          {sortedSectors.map((sector) => (
-            <BotonAccion
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 4.5, sm: 5 } }}>
+        {sortedSectors.map((sector) => {
+          const { color, icon: Icon } = sectorStyle(sector.id);
+
+          return (
+            <ButtonBase
               key={sector.id}
-              sx={{
-                height: { xs: '110px', sm: '130px', md: '150px' },
-                width: '100%',
-                maxWidth: { xs: '100%', sm: '520px', md: '560px' },
-                fontSize: { xs: '34px', sm: '46px', md: '58px' },
-              }}
               onClick={(event) => onClick(sector.id, event)}
+              sx={{
+                textAlign: 'left',
+                borderRadius: '18px',
+                overflow: 'hidden',
+                bgcolor: '#ffffff',
+                width: '100%',
+                height: { xs: 132, sm: 152 },
+                boxShadow: '0 12px 28px rgba(15, 23, 42, 0.12)',
+                border: '1px solid rgba(15, 23, 42, 0.05)',
+                transition: 'transform 180ms ease, box-shadow 180ms ease',
+                '&:hover': {
+                  transform: 'translateY(-2px)',
+                  boxShadow: '0 16px 32px rgba(15, 23, 42, 0.16)',
+                },
+              }}
             >
-              {sector.nombre}
-            </BotonAccion>
-          ))}
-        </Box>
-      </TarjetaPrincipal>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 1,
+                  px: { xs: 2, sm: 2.5 },
+                  py: 0,
+                  height: '100%',
+                  width: '100%',
+                  position: 'relative',
+                }}
+              >
+                <Box
+                  sx={{
+                    width: '5px',
+                    height: '72px',
+                    borderRadius: '4px',
+                    bgcolor: color,
+                  }}
+                />
+                <Box
+                  sx={{
+                    width: '72px',
+                    height: '72px',
+                    borderRadius: '14px',
+                    bgcolor: `${color}1A`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color,
+                    flexShrink: 0,
+                  }}
+                >
+                  <Icon sx={{ fontSize: 28 }} />
+                </Box>
+
+                <Box sx={{ flexGrow: 1 }}>
+                  <Typography
+                    sx={{
+                      fontWeight: 700,
+                      letterSpacing: '0.1em',
+                      fontSize: { xs: '2.1rem', sm: '2.25rem' },
+                      color: theme.palette.grey[900],
+                    }}
+                  >
+                    {sector.nombre?.toUpperCase()}
+                  </Typography>
+                  {sector.descripcion && (
+                    <Typography
+                      sx={{
+                        fontSize: { xs: '0.9rem', sm: '1rem' },
+                        color: theme.palette.grey[600],
+                        fontWeight: 500,
+                      }}
+                    >
+                      {sector.descripcion}
+                    </Typography>
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    width: { xs: 32, sm: 36 },
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    color: theme.palette.grey[400],
+                    flexShrink: 0,
+                  }}
+                >
+                  <ChevronRightRoundedIcon />
+                </Box>
+              </Box>
+            </ButtonBase>
+          );
+        })}
+      </Box>
     </Box>
   );
 };

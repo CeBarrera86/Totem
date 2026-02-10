@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { AppBar, Container, Grid, styled, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { AppBar, Box, Container, Grid, styled, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
 
 import corpicoLogo from '@/assets/img/Corpico_logo.svg';
 
@@ -109,43 +109,41 @@ const Navbar = () => {
               </Typography>
             </Grid>
 
-            {/* Columna 2: Título central */}
-            <Grid sx={{ width: { xs: '70%', sm: '50%', md: '33%' }, display: 'flex', justifyContent: 'center' }}>
-              <Typography
-                variant="h5"
-                noWrap={false}
-                component="div"
-                sx={{
-                  fontWeight: 700,
-                  color: 'inherit',
-                  textDecoration: 'none',
-                  textAlign: 'center',
-                  fontSize: { xs: '1rem', sm: '1.2rem', md: '1.4rem' },
-                  whiteSpace: { xs: 'normal', sm: 'nowrap' },
-                }}
-              >
-                <strong>Gestión de Turnos</strong>
-              </Typography>
-            </Grid>
-
-            {/* Columna 3: Hora actual */}
+            {/* Columna 2: Hora actual */}
             <Grid
               sx={{
-                width: { xs: '100%', sm: '25%', md: '33%' },
+                width: { xs: '70%', sm: '75%', md: '67%' },
                 display: 'flex',
-                justifyContent: { xs: 'center', sm: 'flex-end' },
+                justifyContent: { xs: 'flex-end', sm: 'flex-end' },
               }}
             >
-              <Typography
-                variant="h6"
-                noWrap
-                component="div"
-                sx={{ color: 'inherit', fontSize: { xs: '0.75rem', sm: '0.9rem', md: '1.05rem' } }}
+              <Box
+                sx={{
+                  px: { xs: 1.5, sm: 2 },
+                  py: { xs: 0.6, sm: 0.75 },
+                  borderRadius: '999px',
+                  bgcolor: theme.palette.grey[100],
+                  color: theme.palette.grey[900],
+                  border: `1px solid ${theme.palette.grey[200]}`,
+                }}
               >
-                <strong>
-                  {formatDate(currentTime)} - {formatTime(currentTime)}
-                </strong>
-              </Typography>
+                <Typography
+                  variant="h6"
+                  noWrap
+                  component="div"
+                  sx={{ color: 'inherit', fontSize: { xs: '0.75rem', sm: '0.9rem', md: '1.05rem' } }}
+                >
+                  <strong>
+                    {formatTime(currentTime)}
+                  </strong>
+                  <Box component="span" sx={{ mx: 0.75, color: theme.palette.grey[500] }}>
+                    |
+                  </Box>
+                  <Box component="span" sx={{ color: theme.palette.grey[600] }}>
+                    {formatDate(currentTime)}
+                  </Box>
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </Toolbar>

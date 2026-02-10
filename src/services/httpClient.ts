@@ -3,6 +3,7 @@ import axios, { AxiosError, type AxiosRequestConfig } from 'axios';
 import { config } from '@/config/config';
 
 const API_KEY = import.meta.env.VITE_API_KEY as string | undefined;
+const TOTEM_TOKEN = import.meta.env.VITE_TOTEM_TOKEN as string | undefined;
 
 const joinUrl = (base: string, path: string) => {
   const normalizedBase = base.endsWith('/') ? base.slice(0, -1) : base;
@@ -13,7 +14,10 @@ const joinUrl = (base: string, path: string) => {
 export const httpClient = axios.create({
   baseURL: joinUrl(config.apiBaseUrl, config.apiPrefix),
   timeout: config.apiTimeoutMs,
-  headers: API_KEY ? { 'X-Api-Key': API_KEY } : undefined,
+  headers: {
+    ...(API_KEY ? { 'X-Api-Key': API_KEY } : {}),
+    ...(TOTEM_TOKEN ? { Authorization: `Bearer ${TOTEM_TOKEN}` } : {}),
+  },
 });
 
 type RetryableConfig = AxiosRequestConfig & { __retry?: boolean };

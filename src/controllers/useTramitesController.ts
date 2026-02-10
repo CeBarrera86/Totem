@@ -1,4 +1,4 @@
-import { useEffect, useState, type MouseEvent } from 'react';
+import { useCallback, useEffect, useState, type MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useDatosCliente from '@/hooks/useDatosCliente';
@@ -17,11 +17,15 @@ export const useTramitesController = () => {
   const [openTicketDialog, setOpenTicketDialog] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
+  const fetchTramites = useCallback(() => {
     getTramites()
       .then(setTramites)
       .catch((err: Error) => setError(`Error al cargar trámites: ${err.message}`));
   }, []);
+
+  useEffect(() => {
+    fetchTramites();
+  }, [fetchTramites]);
 
   const handleTramiteClick = async (tramite: Tramite, event?: MouseEvent<HTMLButtonElement>) => {
     if (event?.currentTarget) event.currentTarget.blur();
