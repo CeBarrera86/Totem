@@ -1,11 +1,19 @@
 import type { Ticket } from '@/models/ticket';
 import { httpClient, normalizeApiError } from '@/services/httpClient';
 
-const BASE_URL = '/Ticket/totem';
+const BASE_URL = '/totem/ticket';
 
-export const generarTicket = async (clienteId: number, sectorId: number): Promise<Ticket> => {
+// Permite ambos flujos: con clienteId o solo sectorId
+export const generarTicket = async (
+  sectorId: number,
+  clienteId?: number
+): Promise<Ticket> => {
   try {
-    const response = await httpClient.post<Ticket>(BASE_URL, { clienteId, sectorIdOrigen: sectorId });
+    // Si hay clienteId, enviar ambos; si no, solo sectorId
+    const payload = clienteId !== undefined
+      ? { clienteId, sectorId }
+      : { sectorId };
+    const response = await httpClient.post<Ticket>(BASE_URL, payload);
     return response.data;
   } catch (error) {
     throw new Error(normalizeApiError(error, 'Error al generar ticket'));

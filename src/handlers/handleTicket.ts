@@ -1,23 +1,23 @@
 import { generarTicket } from '@/services/ticketService';
 
 interface HandleTicketArgs {
-  clienteId: number;
   sectorId: number;
+  clienteId?: number;
   setIsLoading: (value: boolean) => void;
   setTicketInfo: (ticket: { letra?: string | null; numero?: number | string | null }) => void;
   setOpenTicketDialog: (value: boolean) => void;
 }
 
 export const handleTicket = async ({
-  clienteId,
   sectorId,
+  clienteId,
   setIsLoading,
   setTicketInfo,
   setOpenTicketDialog,
 }: HandleTicketArgs) => {
   setIsLoading(true);
   try {
-    const ticket = await generarTicket(clienteId, sectorId);
+    const ticket = await generarTicket(sectorId, clienteId);
     setTicketInfo({ letra: ticket.letra, numero: ticket.numero });
     setOpenTicketDialog(true);
   } catch (err) {

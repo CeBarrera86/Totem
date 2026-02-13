@@ -16,18 +16,19 @@ interface InnerIndexProps {
 
 const InnerIndex = ({ sectores, onClick }: InnerIndexProps) => {
   const theme = useTheme();
-  const filteredSectors = useSectoresFiltrados(sectores, [1, 3, 4]);
-  const sortedSectors = [1, 3, 4]
+  // IDs esperados ahora: 1, 2, 3
+  const filteredSectors = useSectoresFiltrados(sectores, [1, 2, 3]);
+  const sortedSectors = [1, 2, 3]
     .map((id) => filteredSectors.find((sector) => sector.id === id))
     .filter((sector): sector is Sector => Boolean(sector));
 
   const sectorStyle = (sectorId: number) => {
     switch (sectorId) {
-      case 1:
+      case 1: // CAJAS
         return { color: theme.palette.corpico.verde, icon: PaymentsRoundedIcon };
-      case 3:
+      case 2: // USUARIOS
         return { color: theme.palette.corpico.violeta, icon: PeopleAltRoundedIcon };
-      case 4:
+      case 3: // RECLAMOS
         return { color: theme.palette.corpico.azul, icon: ReportProblemRoundedIcon };
       default:
         return { color: theme.palette.grey[500], icon: PaymentsRoundedIcon };

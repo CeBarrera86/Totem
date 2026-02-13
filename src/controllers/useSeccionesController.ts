@@ -45,7 +45,7 @@ export const useSeccionesController = () => {
     }
 
     try {
-      const ticket = await generarTicket(cliente.id, sectorId);
+      const ticket = await generarTicket(sectorId, cliente.id);
       setTicketInfo({ letra: ticket.letra, numero: ticket.numero });
       setOpenTicketDialog(true);
     } catch (err) {

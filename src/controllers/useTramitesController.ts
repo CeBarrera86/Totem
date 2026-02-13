@@ -45,7 +45,7 @@ export const useTramitesController = () => {
     }
 
     try {
-      const ticket = await generarTicket(cliente.id, sectorPadreId);
+      const ticket = await generarTicket(sectorPadreId, cliente.id);
       setTicketInfo({ letra: ticket.letra, numero: ticket.numero });
       setOpenTicketDialog(true);
     } catch (err) {

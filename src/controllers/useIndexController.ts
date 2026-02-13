@@ -27,7 +27,6 @@ export const useIndexController = () => {
   const handleSectionClick = (sectorId: number, event?: MouseEvent<HTMLButtonElement>) => {
     if (event?.currentTarget) event.currentTarget.blur();
     handleTicket({
-      clienteId: 1,
       sectorId,
       setIsLoading,
       setTicketInfo,
