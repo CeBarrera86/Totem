@@ -23,8 +23,8 @@ export const httpClient = axios.create({
 type RetryableConfig = AxiosRequestConfig & { __retry?: boolean };
 
 const shouldRetry = (error: AxiosError) => {
-  if (error.code === 'ECONNABORTED') return true;
-  if (!error.response) return true;
+  if (error.code === 'ECONNABORTED') {return true;}
+  if (!error.response) {return true;}
   return false;
 };
 
@@ -69,7 +69,7 @@ export const normalizeApiError = (error: unknown, fallback: string) => {
     if (hasMessage(data) && data.message) {
       return data.message;
     }
-    if (axiosError.message) return axiosError.message;
+    if (axiosError.message) {return axiosError.message;}
   }
 
   if (error instanceof Error) {

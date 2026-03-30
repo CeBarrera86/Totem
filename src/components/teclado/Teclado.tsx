@@ -1,4 +1,6 @@
 import { Box } from '@mui/material';
+import { memo, type MouseEvent,useCallback } from 'react';
+
 import BotonTeclado from '@/components/teclado/BotonTeclado';
 
 interface TecladoProps {
@@ -6,7 +8,19 @@ interface TecladoProps {
   onBackspace: () => void;
 }
 
-const Teclado = ({ onNumberClick, onBackspace }: TecladoProps) => {
+const DIGITS = [7, 8, 9, 4, 5, 6, 1, 2, 3, 0];
+
+const Teclado = memo(({ onNumberClick, onBackspace }: TecladoProps) => {
+  const handleDigitClick = useCallback(
+    (event: MouseEvent<HTMLButtonElement>) => {
+      const digit = event.currentTarget.dataset.digit;
+      if (digit) {
+        onNumberClick(digit);
+      }
+    },
+    [onNumberClick]
+  );
+
   return (
     <Box
       sx={{
@@ -20,8 +34,8 @@ const Teclado = ({ onNumberClick, onBackspace }: TecladoProps) => {
         height: '100%',
       }}
     >
-      {[7, 8, 9, 4, 5, 6, 1, 2, 3, 0].map((num) => (
-        <BotonTeclado key={num} onClick={() => onNumberClick(num.toString())}>
+      {DIGITS.map((num) => (
+        <BotonTeclado key={num} data-digit={num.toString()} onClick={handleDigitClick}>
           {num}
         </BotonTeclado>
       ))}
@@ -39,6 +53,8 @@ const Teclado = ({ onNumberClick, onBackspace }: TecladoProps) => {
       </BotonTeclado>
     </Box>
   );
-};
+});
+
+Teclado.displayName = 'Teclado';
 
 export default Teclado;

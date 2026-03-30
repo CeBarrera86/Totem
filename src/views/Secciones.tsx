@@ -1,8 +1,8 @@
 import { Typography } from '@mui/material';
 
-import ContenedorPrincipal from '@/components/layout/ContenedorPrincipal';
-import TicketSuccess from '@/components/dialogos/TicketSuccess';
 import Procesando from '@/components/dialogos/Procesando';
+import TicketSuccess from '@/components/dialogos/TicketSuccess';
+import ContenedorPrincipal from '@/components/layout/ContenedorPrincipal';
 import InnerSecciones from '@/components/pantallas/InnerSecciones';
 import { useSeccionesController } from '@/controllers/useSeccionesController';
 
@@ -19,16 +19,9 @@ const Secciones = () => {
     handleCloseTicketDialog,
   } = useSeccionesController();
 
-  if (error) {
-    return (
-      <ContenedorPrincipal>
-        <Typography color="error">{error}</Typography>
-      </ContenedorPrincipal>
-    );
-  }
-
   return (
     <ContenedorPrincipal>
+      {error && <Typography color="error">{error}</Typography>}
       <InnerSecciones sectores={sectores} cliente={cliente} onClick={handleSectionClick} onBack={handleBackClick} />
       <Procesando open={isLoading} />
       <TicketSuccess open={openTicketDialog} ticketData={ticketInfo} onClose={handleCloseTicketDialog} />

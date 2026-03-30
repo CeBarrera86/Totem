@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
 import { Card, CardContent, CardHeader } from '@mui/material';
 import type { CardProps } from '@mui/material/Card';
+import { ReactNode } from 'react';
 
 interface TarjetaPrincipalProps extends CardProps {
   titulo?: ReactNode;

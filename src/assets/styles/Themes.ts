@@ -1,13 +1,13 @@
 import { createTheme } from '@mui/material/styles';
 
 const corpicoPalette = {
-  azul: '#3e64ac',
-  violeta: '#712d85',
-  rojo: '#e22b14',
-  naranja: '#ea672e',
-  amarillo: '#ffda1f',
-  verde: '#35ac75',
-  celeste: '#5fc3e6',
+  azul: "#3e64ac",
+  violeta: "#712d85",
+  rojo: "#e22b14",
+  naranja: "#ea672e",
+  amarillo: "#ffda1f",
+  verde: "#35ac75",
+  celeste: "#5fc3e6",
 };
 
 const appTheme = createTheme({

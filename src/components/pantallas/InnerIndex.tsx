@@ -1,10 +1,10 @@
-import type { MouseEvent } from 'react';
-import { Box, ButtonBase, Typography } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import PaymentsRoundedIcon from '@mui/icons-material/PaymentsRounded';
 import PeopleAltRoundedIcon from '@mui/icons-material/PeopleAltRounded';
 import ReportProblemRoundedIcon from '@mui/icons-material/ReportProblemRounded';
-import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
+import { Box, ButtonBase, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import type { MouseEvent } from 'react';
 
 import { useSectoresFiltrados } from '@/hooks/useSectoresFiltrados';
 import type { Sector } from '@/models/sector';

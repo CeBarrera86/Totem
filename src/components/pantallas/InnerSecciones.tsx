@@ -1,11 +1,12 @@
-import type { MouseEvent } from 'react';
-import { Box, Typography, Grid } from '@mui/material';
+import { Box, Grid,Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import TarjetaPrincipal from '@/components/tarjeta/TarjetaPrincipal';
+import type { MouseEvent } from 'react';
+
 import BotonAccion from '@/components/botones/BotonAccion';
 import BotonVolver from '@/components/botones/BotonVolver';
-import type { Sector } from '@/models/sector';
+import TarjetaPrincipal from '@/components/tarjeta/TarjetaPrincipal';
 import type { Cliente } from '@/models/cliente';
+import type { Sector } from '@/models/sector';
 
 interface InnerSeccionesProps {
   sectores: Sector[];

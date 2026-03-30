@@ -1,6 +1,6 @@
+import { Box, Container, styled, Typography } from '@mui/material';
 import { useState } from 'react';
-import { Container, Box, styled, Typography } from '@mui/material';
-import { MdWeb, MdSmartphone } from 'react-icons/md';
+import { MdSmartphone,MdWeb } from 'react-icons/md';
 
 const StyledFooter = styled(Box)(({ theme }) => {
   const borderColorsForGradient = [
@@ -41,7 +41,7 @@ const StyledFooter = styled(Box)(({ theme }) => {
 });
 
 const Footer = () => {
-  const [currentYear] = useState<number>(new Date().getFullYear());
+  const [currentYear] = useState<number>(() => new Date().getFullYear());
 
   const linkItemSx = {
     display: 'inline-flex',

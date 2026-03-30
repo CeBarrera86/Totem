@@ -1,6 +1,8 @@
+import './assets/styles/Totem.css';
+
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import './assets/styles/Totem.css';
+
 import App from './App';
 
 const rootElement = document.getElementById('root');

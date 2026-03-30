@@ -1,6 +1,8 @@
 import { Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import type { ButtonProps } from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+
+const DEFAULT_SX = {};
 
 const StyledBotonVolver = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(2),
@@ -16,7 +18,7 @@ const StyledBotonVolver = styled(Button)(({ theme }) => ({
   minWidth: '300px',
 }));
 
-const BotonVolver = ({ onClick, sx = {}, ...props }: ButtonProps) => {
+const BotonVolver = ({ onClick, sx = DEFAULT_SX, ...props }: ButtonProps) => {
   return (
     <StyledBotonVolver variant="contained" color="error" onClick={onClick} sx={sx} {...props}>
       VOLVER

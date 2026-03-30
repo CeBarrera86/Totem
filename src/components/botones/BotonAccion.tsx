@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import type { ButtonProps } from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
 
 const StyledBotonAccion = styled(Button)(({ theme }) => ({
   borderRadius: theme.spacing(2),

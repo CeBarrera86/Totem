@@ -1,6 +1,6 @@
-import { ReactNode } from 'react';
 import { Box, Container } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { ReactNode } from 'react';
 
 interface ContenedorPrincipalProps {
   children: ReactNode;

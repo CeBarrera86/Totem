@@ -5,7 +5,7 @@ import { useGlobalApiError } from '@/hooks/useGlobalApiError';
 const GlobalErrorBanner = () => {
   const { error, clearError } = useGlobalApiError();
 
-  if (!error) return null;
+  if (!error) {return null;}
 
   return (
     <Box sx={{ position: 'sticky', top: 115, zIndex: 1200 }}>

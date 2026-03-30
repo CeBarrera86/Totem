@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, CircularProgress, Typography } from '@mui/material';
+import { CircularProgress, Dialog, DialogContent, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 
 interface ProcesandoProps {

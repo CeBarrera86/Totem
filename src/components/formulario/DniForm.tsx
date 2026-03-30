@@ -1,10 +1,10 @@
-import type { BaseSyntheticEvent } from 'react';
 import { Box } from '@mui/material';
-import { useFormContext } from 'react-hook-form';
 import { useTheme } from '@mui/material/styles';
+import type { BaseSyntheticEvent } from 'react';
+import { useFormContext } from 'react-hook-form';
 
-import DniInput from '@/components/input/Dni';
 import BotonAccion from '@/components/botones/BotonAccion';
+import DniInput from '@/components/input/Dni';
 import type { DniFormValues } from '@/validations/dniSchema';
 
 interface DniFormProps {

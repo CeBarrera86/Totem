@@ -2,55 +2,66 @@ import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import tsParser from '@typescript-eslint/parser';
-import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tseslint from 'typescript-eslint';
+import prettier from 'eslint-config-prettier';
 import boundaries from 'eslint-plugin-boundaries';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import { defineConfig, globalIgnores } from 'eslint/config';
 
-export default [
-  { ignores: ['dist', 'vite.config.ts', 'eslint.config.ts'] },
+export default defineConfig([
+  globalIgnores(['dist', 'vite.config.ts', 'eslint.config.ts']),
   {
     files: ['**/*.{ts,tsx}'],
-    languageOptions: {
-      ecmaVersion: 2020,
-      globals: globals.browser,
-      parser: tsParser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        ecmaFeatures: { jsx: true },
-        sourceType: 'module',
-      },
-    },
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs['recommended-latest'],
+      reactRefresh.configs.vite,
+      prettier,
+    ],
     plugins: {
-      '@typescript-eslint': tsPlugin,
-      'react-hooks': reactHooks,
-      'react-refresh': reactRefresh,
       boundaries,
+      'simple-import-sort': simpleImportSort,
     },
     settings: {
       'boundaries/elements': [
-        { type: 'app', pattern: 'App.tsx', mode: 'file' },
-        { type: 'entry', pattern: 'main.tsx', mode: 'file' },
-        { type: 'env', pattern: 'vite-env.d.ts', mode: 'file' },
-        { type: 'types', pattern: 'types/**' },
-        { type: 'views', pattern: 'views/**' },
-        { type: 'components', pattern: 'components/**' },
-        { type: 'controllers', pattern: 'controllers/**' },
-        { type: 'hooks', pattern: 'hooks/**' },
-        { type: 'handlers', pattern: 'handlers/**' },
-        { type: 'services', pattern: 'services/**' },
-        { type: 'models', pattern: 'models/**' },
-        { type: 'validations', pattern: 'validations/**' },
-        { type: 'config', pattern: 'config/**' },
-        { type: 'assets', pattern: 'assets/**' },
+        { type: 'app', pattern: 'src/App.tsx', mode: 'file' },
+        { type: 'entry', pattern: 'src/main.tsx', mode: 'file' },
+        { type: 'env', pattern: 'src/vite-env.d.ts', mode: 'file' },
+        { type: 'types', pattern: 'src/types/**' },
+        { type: 'views', pattern: 'src/views/**' },
+        { type: 'components', pattern: 'src/components/**' },
+        { type: 'controllers', pattern: 'src/controllers/**' },
+        { type: 'hooks', pattern: 'src/hooks/**' },
+        { type: 'services', pattern: 'src/services/**' },
+        { type: 'models', pattern: 'src/models/**' },
+        { type: 'validations', pattern: 'src/validations/**' },
+        { type: 'config', pattern: 'src/config/**' },
+        { type: 'assets', pattern: 'src/assets/**' },
       ],
     },
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
     rules: {
-      ...js.configs.recommended.rules,
-      ...tsPlugin.configs.recommended.rules,
-      ...reactHooks.configs.recommended.rules,
+      'simple-import-sort/imports': 'warn',
+      'simple-import-sort/exports': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error', 'info'] }],
+
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^[A-Z_]' }],
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-explicit-any': 'warn',
+
+      eqeqeq: ['error', 'always'],
+      curly: 'warn',
+      'no-var': 'error',
+      'prefer-const': 'warn',
+
       'boundaries/no-unknown': 'error',
       'boundaries/no-unknown-files': 'error',
       'boundaries/element-types': [
@@ -58,14 +69,13 @@ export default [
         {
           default: 'disallow',
           rules: [
-            { from: 'app', allow: ['views', 'components', 'controllers', 'hooks', 'models', 'types', 'validations', 'assets', 'services', 'handlers', 'config'] },
+            { from: 'app', allow: ['views', 'components', 'controllers', 'hooks', 'models', 'types', 'validations', 'assets', 'services', 'config'] },
             { from: 'entry', allow: ['app', 'assets'] },
             { from: 'env', allow: [] },
             { from: 'views', allow: ['components', 'controllers', 'types', 'assets'] },
             { from: 'components', allow: ['components', 'hooks', 'models', 'types', 'assets'] },
-            { from: 'controllers', allow: ['services', 'handlers', 'hooks', 'models', 'types', 'validations', 'config'] },
+            { from: 'controllers', allow: ['services', 'hooks', 'models', 'types', 'validations', 'config'] },
             { from: 'hooks', allow: ['services', 'models', 'types', 'validations', 'config'] },
-            { from: 'handlers', allow: ['services', 'models', 'types', 'config'] },
             { from: 'services', allow: ['models', 'types', 'config'] },
             { from: 'models', allow: ['types'] },
             { from: 'validations', allow: ['types'] },
@@ -77,4 +87,4 @@ export default [
       ],
     },
   },
-];
+]);

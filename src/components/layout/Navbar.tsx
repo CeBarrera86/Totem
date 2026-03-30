@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
 import { AppBar, Box, Container, Grid, styled, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { useEffect, useState } from 'react';
 
 import corpicoLogo from '@/assets/img/Corpico_logo.svg';
 

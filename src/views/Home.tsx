@@ -5,12 +5,12 @@ import InnerHome from '@/components/pantallas/InnerHome';
 import { useHomeController } from '@/controllers/useHomeController';
 
 const Home = () => {
-  const { methods, currentDniValue, isLoading, onSubmit } = useHomeController();
+  const { methods, currentDniValue, isLoading, apiError, onSubmit } = useHomeController();
 
   return (
     <ContenedorPrincipal>
       <FormProvider {...methods}>
-        <InnerHome currentDniValue={currentDniValue} onSubmit={onSubmit} isLoading={isLoading} />
+        <InnerHome currentDniValue={currentDniValue} onSubmit={onSubmit} isLoading={isLoading} apiError={apiError} />
       </FormProvider>
     </ContenedorPrincipal>
   );

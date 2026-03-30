@@ -1,17 +1,20 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import Navbar from '@/components/layout/Navbar';
-import Footer from '@/components/layout/Footer';
-import NetworkStatus from '@/components/layout/NetworkStatus';
-import GlobalErrorBanner from '@/components/layout/GlobalErrorBanner';
-import Index from '@/views/Index';
-import Home from '@/views/Home';
-import Secciones from '@/views/Secciones';
-import Tramites from '@/views/Tramites';
 import appTheme from '@/assets/styles/Themes';
+import Footer from '@/components/layout/Footer';
+import GlobalErrorBanner from '@/components/layout/GlobalErrorBanner';
+import Navbar from '@/components/layout/Navbar';
+import NetworkStatus from '@/components/layout/NetworkStatus';
+import RouteFallback from '@/components/layout/RouteFallback';
+
+const Home = lazy(() => import('@/views/Home'));
+const Index = lazy(() => import('@/views/Index'));
+const Secciones = lazy(() => import('@/views/Secciones'));
+const Tramites = lazy(() => import('@/views/Tramites'));
 
 const App = () => {
   return (
@@ -38,12 +41,14 @@ const App = () => {
               mb: 'var(--appFooterHeight)',
             }}
           >
-            <Routes>
-              <Route path="/index" element={<Index />} />
-              {/* <Route path="/" element={<Home />} />
-              <Route path="/secciones" element={<Secciones />} />
-              <Route path="/tramites" element={<Tramites />} /> */}
-            </Routes>
+            <Suspense fallback={<RouteFallback />}>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/index" element={<Index />} />
+                <Route path="/secciones" element={<Secciones />} />
+                <Route path="/tramites" element={<Tramites />} />
+              </Routes>
+            </Suspense>
           </Box>
           <Footer />
         </Box>

@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import { TextField, FormHelperText, Box } from '@mui/material';
-import { Controller, useFormContext } from 'react-hook-form';
+import { Box,FormHelperText, TextField } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useState } from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 
 import type { DniFormValues } from '@/validations/dniSchema';
 
@@ -38,7 +38,6 @@ const DniInput = ({ currentDniValue }: DniInputProps) => {
             fullWidth
             variant="outlined"
             error={Boolean(errors.dni)}
-            autoFocus
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             sx={{

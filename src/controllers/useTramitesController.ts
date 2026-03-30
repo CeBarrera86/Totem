@@ -1,26 +1,26 @@
-import { useCallback, useEffect, useState, type MouseEvent } from 'react';
+import { type MouseEvent,useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useDatosCliente from '@/hooks/useDatosCliente';
-import { getTramites } from '@/services/sectorService';
-import { generarTicket } from '@/services/ticketService';
+import { useTicketFlow } from '@/hooks/useTicketFlow';
 import type { Tramite } from '@/models/tramite';
-import type { Ticket } from '@/models/ticket';
+import { getTramites } from '@/services/sectorService';
+import { clearClienteSession } from '@/services/sessionClienteStorage';
 
 export const useTramitesController = () => {
   const navigate = useNavigate();
   const cliente = useDatosCliente();
 
   const [tramites, setTramites] = useState<Tramite[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [ticketInfo, setTicketInfo] = useState<Ticket | null>(null);
-  const [openTicketDialog, setOpenTicketDialog] = useState(false);
-  const [error, setError] = useState('');
+  const [dataError, setDataError] = useState('');
+  const [actionError, setActionError] = useState('');
+  const { isLoading, ticketInfo, openTicketDialog, ticketError, requestTicket, closeTicketDialog, clearTicketError } =
+    useTicketFlow();
 
   const fetchTramites = useCallback(() => {
     getTramites()
       .then(setTramites)
-      .catch((err: Error) => setError(`Error al cargar trámites: ${err.message}`));
+      .catch((err: Error) => setDataError(`Error al cargar tramites: ${err.message}`));
   }, []);
 
   useEffect(() => {
@@ -28,32 +28,22 @@ export const useTramitesController = () => {
   }, [fetchTramites]);
 
   const handleTramiteClick = async (tramite: Tramite, event?: MouseEvent<HTMLButtonElement>) => {
-    if (event?.currentTarget) event.currentTarget.blur();
-    setIsLoading(true);
+    if (event?.currentTarget) {event.currentTarget.blur();}
+    setActionError('');
+    clearTicketError();
 
     if (!cliente?.id) {
-      alert('No se pudo obtener la información del cliente.');
-      setIsLoading(false);
+      setActionError('No se pudo obtener la informacion del cliente.');
       return;
     }
 
     const sectorPadreId = tramite.padreId;
     if (!sectorPadreId) {
-      alert('No se pudo determinar el sector de origen para este trámite.');
-      setIsLoading(false);
+      setActionError('No se pudo determinar el sector de origen para este tramite.');
       return;
     }
 
-    try {
-      const ticket = await generarTicket(sectorPadreId, cliente.id);
-      setTicketInfo({ letra: ticket.letra, numero: ticket.numero });
-      setOpenTicketDialog(true);
-    } catch (err) {
-      console.error('Error al generar ticket:', err);
-      alert(err instanceof Error ? err.message : 'Error al generar ticket');
-    } finally {
-      setIsLoading(false);
-    }
+    await requestTicket({ sectorId: sectorPadreId, clienteId: cliente.id });
   };
 
   const handleBackClick = () => {
@@ -61,8 +51,8 @@ export const useTramitesController = () => {
   };
 
   const handleCloseTicketDialog = () => {
-    setOpenTicketDialog(false);
-    sessionStorage.removeItem('datosCliente');
+    closeTicketDialog();
+    clearClienteSession();
     navigate('/');
   };
 
@@ -72,7 +62,7 @@ export const useTramitesController = () => {
     isLoading,
     ticketInfo,
     openTicketDialog,
-    error,
+    error: dataError || actionError || ticketError,
     handleTramiteClick,
     handleBackClick,
     handleCloseTicketDialog,

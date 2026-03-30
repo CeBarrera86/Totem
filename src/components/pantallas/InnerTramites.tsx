@@ -1,10 +1,11 @@
+import { Box,Grid, Typography } from '@mui/material';
 import type { MouseEvent } from 'react';
-import { Grid, Typography, Box } from '@mui/material';
-import TarjetaPrincipal from '@/components/tarjeta/TarjetaPrincipal';
+
 import BotonAccion from '@/components/botones/BotonAccion';
 import BotonVolver from '@/components/botones/BotonVolver';
-import type { Tramite } from '@/models/tramite';
+import TarjetaPrincipal from '@/components/tarjeta/TarjetaPrincipal';
 import type { Cliente } from '@/models/cliente';
+import type { Tramite } from '@/models/tramite';
 
 interface InnerTramitesProps {
   tramites: Tramite[];

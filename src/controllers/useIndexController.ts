@@ -1,23 +1,21 @@
-import { useCallback, useEffect, useState, type MouseEvent } from 'react';
+import { type MouseEvent,useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { handleTicket } from '@/handlers/handleTicket';
-import { getSectores } from '@/services/sectorService';
+import { useTicketFlow } from '@/hooks/useTicketFlow';
 import type { Sector } from '@/models/sector';
-import type { Ticket } from '@/models/ticket';
+import { getSectores } from '@/services/sectorService';
 
 export const useIndexController = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
-  const [ticketInfo, setTicketInfo] = useState<Ticket | null>(null);
-  const [openTicketDialog, setOpenTicketDialog] = useState(false);
   const [sectores, setSectores] = useState<Sector[]>([]);
-  const [error, setError] = useState('');
+  const [dataError, setDataError] = useState('');
+  const { isLoading, ticketInfo, openTicketDialog, ticketError, requestTicket, closeTicketDialog, clearTicketError } =
+    useTicketFlow();
 
   const fetchSectores = useCallback(() => {
     getSectores()
       .then(setSectores)
-      .catch((err: Error) => setError(`Error al cargar secciones: ${err.message}`));
+      .catch((err: Error) => setDataError(`Error al cargar secciones: ${err.message}`));
   }, []);
 
   useEffect(() => {
@@ -25,17 +23,13 @@ export const useIndexController = () => {
   }, [fetchSectores]);
 
   const handleSectionClick = (sectorId: number, event?: MouseEvent<HTMLButtonElement>) => {
-    if (event?.currentTarget) event.currentTarget.blur();
-    handleTicket({
-      sectorId,
-      setIsLoading,
-      setTicketInfo,
-      setOpenTicketDialog,
-    });
+    if (event?.currentTarget) {event.currentTarget.blur();}
+    clearTicketError();
+    void requestTicket({ sectorId });
   };
 
   const handleCloseTicketDialog = () => {
-    setOpenTicketDialog(false);
+    closeTicketDialog();
     navigate('/index');
   };
 
@@ -44,7 +38,7 @@ export const useIndexController = () => {
     isLoading,
     ticketInfo,
     openTicketDialog,
-    error,
+    error: dataError || ticketError,
     handleSectionClick,
     handleCloseTicketDialog,
   };

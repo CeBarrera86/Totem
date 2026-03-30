@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import { Dialog, DialogContent, Typography, Box } from '@mui/material';
+import { Box,Dialog, DialogContent, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useEffect } from 'react';
 import { BsCheckCircleFill } from 'react-icons/bs';
 
 import type { Ticket } from '@/models/ticket';
@@ -44,7 +44,10 @@ const TicketSuccess = ({ open, ticketData, onClose }: TicketSuccessProps) => {
     },
   };
 
-  const ticket = `${ticketData.letra || ''}${ticketData.numero ?? ''}`;
+  const message = ticketData.message?.trim() || 'Ticket generado con exito';
+  const ticket =
+    ticketData.data?.toString().trim() ||
+    `${ticketData.letra || ''}${ticketData.numero ?? ''}`.trim();
 
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="ticket-success-dialog-title" sx={dialogStyles}>
@@ -57,13 +60,13 @@ const TicketSuccess = ({ open, ticketData, onClose }: TicketSuccessProps) => {
           variant="h4"
           sx={{ fontWeight: 'bold', mb: theme.spacing(1), color: theme.palette.corpico.naranja }}
         >
-          ¡Ticket Generado con Éxito!
+          {message}
         </Typography>
         <Typography variant="h6" sx={{ color: theme.palette.text.third }}>
           Su turno es:
         </Typography>
         <Typography variant="h2" sx={{ fontWeight: 'bolder', color: theme.palette.corpico.naranja, mb: theme.spacing(3) }}>
-          {ticket}
+          {ticket || '-'}
         </Typography>
       </DialogContent>
     </Dialog>

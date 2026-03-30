@@ -1,25 +1,28 @@
-import { useCallback, useEffect, useState, type MouseEvent } from 'react';
+import { type MouseEvent,useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import useDatosCliente from '@/hooks/useDatosCliente';
-import { getSectores } from '@/services/sectorService';
-import { generarTicket } from '@/services/ticketService';
+import { useTicketFlow } from '@/hooks/useTicketFlow';
 import type { Sector } from '@/models/sector';
-import type { Ticket } from '@/models/ticket';
+import { getSectores } from '@/services/sectorService';
+import { clearClienteSession } from '@/services/sessionClienteStorage';
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const useSeccionesController = () => {
   const navigate = useNavigate();
   const cliente = useDatosCliente();
   const [sectores, setSectores] = useState<Sector[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [ticketInfo, setTicketInfo] = useState<Ticket | null>(null);
-  const [openTicketDialog, setOpenTicketDialog] = useState(false);
-  const [error, setError] = useState('');
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [dataError, setDataError] = useState('');
+  const [actionError, setActionError] = useState('');
+  const { isLoading, ticketInfo, openTicketDialog, ticketError, requestTicket, closeTicketDialog, clearTicketError } =
+    useTicketFlow();
 
   const fetchSectores = useCallback(() => {
     getSectores()
       .then(setSectores)
-      .catch((err: Error) => setError(`Error al cargar secciones: ${err.message}`));
+      .catch((err: Error) => setDataError(`Error al cargar secciones: ${err.message}`));
   }, []);
 
   useEffect(() => {
@@ -27,53 +30,44 @@ export const useSeccionesController = () => {
   }, [fetchSectores]);
 
   const handleSectionClick = async (sectorId: number, event?: MouseEvent<HTMLButtonElement>) => {
-    if (event?.currentTarget) event.currentTarget.blur();
-    setIsLoading(true);
+    if (event?.currentTarget) {event.currentTarget.blur();}
+    setActionError('');
+    clearTicketError();
 
     if (sectorId === 2) {
-      setTimeout(() => {
-        setIsLoading(false);
-        navigate('/tramites');
-      }, 500);
+      setIsNavigating(true);
+      await wait(500);
+      setIsNavigating(false);
+      navigate('/tramites');
       return;
     }
 
     if (!cliente?.id) {
-      alert('No se pudo obtener la información del cliente.');
-      setIsLoading(false);
+      setActionError('No se pudo obtener la informacion del cliente.');
       return;
     }
 
-    try {
-      const ticket = await generarTicket(sectorId, cliente.id);
-      setTicketInfo({ letra: ticket.letra, numero: ticket.numero });
-      setOpenTicketDialog(true);
-    } catch (err) {
-      console.error('Error al generar ticket:', err);
-      alert(err instanceof Error ? err.message : 'Error al generar ticket');
-    } finally {
-      setIsLoading(false);
-    }
+    await requestTicket({ sectorId, clienteId: cliente.id });
   };
 
   const handleBackClick = () => {
-    sessionStorage.removeItem('datosCliente');
+    clearClienteSession();
     navigate('/');
   };
 
   const handleCloseTicketDialog = () => {
-    setOpenTicketDialog(false);
-    sessionStorage.removeItem('datosCliente');
+    closeTicketDialog();
+    clearClienteSession();
     navigate('/');
   };
 
   return {
     cliente,
     sectores,
-    isLoading,
+    isLoading: isLoading || isNavigating,
     ticketInfo,
     openTicketDialog,
-    error,
+    error: dataError || actionError || ticketError,
     handleSectionClick,
     handleBackClick,
     handleCloseTicketDialog,

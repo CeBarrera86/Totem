@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
-import { styled } from '@mui/material/styles';
 import type { ButtonProps } from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import { memo } from 'react';
 
 const StyledBotonTeclado = styled(Button)(({ theme }) => ({
   background: theme.palette.grey[700],
@@ -27,12 +28,14 @@ const StyledBotonTeclado = styled(Button)(({ theme }) => ({
   },
 }));
 
-const BotonTeclado = ({ children, onClick, ...props }: ButtonProps) => {
+const BotonTeclado = memo(({ children, onClick, ...props }: ButtonProps) => {
   return (
     <StyledBotonTeclado onClick={onClick} {...props}>
       {children}
     </StyledBotonTeclado>
   );
-};
+});
+
+BotonTeclado.displayName = 'BotonTeclado';
 
 export default BotonTeclado;

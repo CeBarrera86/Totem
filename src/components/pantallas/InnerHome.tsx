@@ -1,10 +1,10 @@
+import { Box, Grid,Typography } from '@mui/material';
 import type { BaseSyntheticEvent } from 'react';
-import { Box, Typography, Grid } from '@mui/material';
 
+import Procesando from '@/components/dialogos/Procesando';
+import DniForm from '@/components/formulario/DniForm';
 import TarjetaPrincipal from '@/components/tarjeta/TarjetaPrincipal';
 import Teclado from '@/components/teclado/Teclado';
-import DniForm from '@/components/formulario/DniForm';
-import Procesando from '@/components/dialogos/Procesando';
 import { useDniInput } from '@/hooks/useDniInput';
 import type { DniFormValues } from '@/validations/dniSchema';
 
@@ -12,9 +12,10 @@ interface InnerHomeProps {
   currentDniValue: string;
   onSubmit: (data: DniFormValues, event?: BaseSyntheticEvent) => void;
   isLoading: boolean;
+  apiError: string;
 }
 
-const InnerHome = ({ currentDniValue, onSubmit, isLoading }: InnerHomeProps) => {
+const InnerHome = ({ currentDniValue, onSubmit, isLoading, apiError }: InnerHomeProps) => {
   const { handleNumberClick, handleBackspace } = useDniInput(10);
 
   const tituloCard = (
@@ -37,6 +38,11 @@ const InnerHome = ({ currentDniValue, onSubmit, isLoading }: InnerHomeProps) => 
               <Typography align="center" variant="h6" sx={{ fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' } }}>
                 INGRESE SU DNI
               </Typography>
+              {apiError && (
+                <Typography align="center" color="error" sx={{ mt: 1 }}>
+                  {apiError}
+                </Typography>
+              )}
               <DniForm onSubmit={onSubmit} currentDniValue={currentDniValue} />
             </TarjetaPrincipal>
           </Box>
