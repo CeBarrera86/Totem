@@ -7,8 +7,6 @@ const {
   VITE_PRINT_PRINTER_NAME,
 } = import.meta.env;
 
-export type PrintMode = 'auto' | 'agent' | 'browser';
-
 const buildBaseUrl = () => {
   if (VITE_API_URL) {return VITE_API_URL;}
   if (!VITE_DIR) {return '';}
@@ -18,7 +16,7 @@ const buildBaseUrl = () => {
 
 const baseUrl = buildBaseUrl();
 
-const resolvePrintMode = (): PrintMode => {
+const resolvePrintMode = () => {
   const mode = VITE_PRINT_MODE?.toLowerCase();
   if (mode === 'agent' || mode === 'browser' || mode === 'auto') {
     return mode;

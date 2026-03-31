@@ -17,7 +17,7 @@ export async function escposImageFromUrl(url: string, threshold = 128, dithering
   ctx.fillRect(0, 0, targetWidth, targetHeight);
   ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
   // Convertir a blanco y negro con dithering opcional
-  let imageData = ctx.getImageData(0, 0, targetWidth, targetHeight);
+  const imageData = ctx.getImageData(0, 0, targetWidth, targetHeight);
   if (dithering) {
     floydSteinbergDither(imageData, threshold);
   } else {
@@ -40,20 +40,18 @@ function floydSteinbergDither(imageData: ImageData, threshold: number) {
   for (let y = 0; y < h; y++) {
     for (let x = 0; x < w; x++) {
       const idx = (y * w + x) * 4;
-      const oldPixel = data[idx];
       const avg = (data[idx] + data[idx+1] + data[idx+2]) / 3;
       const newPixel = avg > threshold ? 255 : 0;
       const error = avg - newPixel;
       data[idx] = data[idx+1] = data[idx+2] = newPixel;
       // Distribuir el error
-      if (x + 1 < w) data[idx + 4] += error * 7 / 16;
-      if (x - 1 >= 0 && y + 1 < h) data[idx + 4 * (w - 1) + 4 * w] += error * 3 / 16;
-      if (y + 1 < h) data[idx + 4 * w] += error * 5 / 16;
-      if (x + 1 < w && y + 1 < h) data[idx + 4 * (w + 1) + 4 * w] += error * 1 / 16;
+      if (x + 1 < w) {data[idx + 4] += error * 7 / 16;}
+      if (x - 1 >= 0 && y + 1 < h) {data[idx + 4 * (w - 1) + 4 * w] += error * 3 / 16;}
+      if (y + 1 < h) {data[idx + 4 * w] += error * 5 / 16;}
+      if (x + 1 < w && y + 1 < h) {data[idx + 4 * (w + 1) + 4 * w] += error * 1 / 16;}
     }
   }
 }
-
 
 function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {

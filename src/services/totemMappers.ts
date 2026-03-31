@@ -37,15 +37,6 @@ const extractCollection = <T,>(payload: CollectionResponse<T>): T[] => {
   return [];
 };
 
-export const mapSectorApiToSector = (item: SectorApi): Sector => {
-  return {
-    id: item.TUS_ID ?? item.id ?? 0,
-    nombre: normalizeText(item.TUS_NOMBRE ?? item.nombre),
-    descripcion: normalizeText(item.TUS_DESCRIPCION ?? item.descripcion),
-    padreId: item.TUS_PADRE_ID ?? item.padreId ?? null,
-  };
-};
-
 export const mapTramiteApiToTramite = (item: TramiteApi): Tramite => {
   return {
     id: item.id ?? item.TUS_ID ?? 0,
@@ -55,6 +46,15 @@ export const mapTramiteApiToTramite = (item: TramiteApi): Tramite => {
 };
 
 export const mapSectoresApi = (payload: CollectionResponse<SectorApi>): Sector[] => {
+  // Definición local de mapSectorApiToSector
+  const mapSectorApiToSector = (item: SectorApi): Sector => {
+    return {
+      id: item.TUS_ID ?? item.id ?? 0,
+      nombre: normalizeText(item.TUS_NOMBRE ?? item.nombre),
+      descripcion: normalizeText(item.TUS_DESCRIPCION ?? item.descripcion),
+      padreId: item.TUS_PADRE_ID ?? item.padreId ?? null,
+    };
+  };
   return extractCollection(payload).map(mapSectorApiToSector);
 };
 
