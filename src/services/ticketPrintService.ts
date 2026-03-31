@@ -6,7 +6,6 @@ import type { Ticket } from '@/models/ticket';
 
 import { setupQzSecurity } from './print/qzSecurity';
 import { buildRawEscPos } from './print/ticketEscposTemplate';
-import { buildPrintableHtml } from './print/ticketHtmlTemplate';
 
 let qzUnavailableInSession = false;
 let qzConnectionPromise: Promise<void> | null = null;
@@ -14,56 +13,7 @@ let qzConnectionPromise: Promise<void> | null = null;
 // Inicializar seguridad QZ al cargar el módulo
 setupQzSecurity();
 
-const printWithBrowser = async (ticket: Ticket) => {
-  if (typeof window === 'undefined' || typeof document === 'undefined') {
-    throw new Error('La impresion solo esta disponible en el navegador.');
-  }
-
-  const iframe = document.createElement('iframe');
-  iframe.style.position = 'fixed';
-  iframe.style.width = '0';
-  iframe.style.height = '0';
-  iframe.style.border = '0';
-  iframe.style.right = '0';
-  iframe.style.bottom = '0';
-
-  document.body.appendChild(iframe);
-
-  const cleanup = () => {
-    iframe.remove();
-  };
-
-  const printFrame = () => {
-    const printWindow = iframe.contentWindow;
-    if (!printWindow) {
-      cleanup();
-      throw new Error('No se pudo abrir el contexto de impresion.');
-    }
-
-    printWindow.focus();
-    printWindow.print();
-    window.setTimeout(cleanup, 300);
-  };
-
-  return new Promise<void>((resolve, reject) => {
-    try {
-      iframe.onload = () => {
-        try {
-          printFrame();
-          resolve();
-        } catch (error) {
-          cleanup();
-          reject(error instanceof Error ? error : new Error('Error al imprimir ticket.'));
-        }
-      };
-
-      iframe.srcdoc = buildPrintableHtml(ticket);
-    } catch (error) {
-      cleanup();
-      reject(error instanceof Error ? error : new Error('Error al preparar impresion del ticket.'));
-    }
-  });
-};
+// Eliminado: función printWithBrowser (visualización HTML)
 
 const ensureQzConnection = async () => {
   if (qzUnavailableInSession) {
@@ -107,11 +57,11 @@ export const printTicket = async (ticket: Ticket) => {
     return;
   }
   if (mode === 'browser') {
-    await printWithBrowser(ticket);
+    // Eliminado: impresión visual con printWithBrowser
     return;
   }
   if (qzUnavailableInSession) {
-    await printWithBrowser(ticket);
+    // Eliminado: impresión visual con printWithBrowser
     return;
   }
   try {
@@ -119,6 +69,6 @@ export const printTicket = async (ticket: Ticket) => {
   } catch (error) {
     console.warn('Impresion directa no disponible. Se usa impresion de navegador.', error);
     qzUnavailableInSession = true;
-    await printWithBrowser(ticket);
+    // Eliminado: impresión visual con printWithBrowser
   }
 };

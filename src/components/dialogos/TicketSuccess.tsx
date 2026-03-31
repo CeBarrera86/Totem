@@ -45,9 +45,7 @@ const TicketSuccess = ({ open, ticketData, onClose }: TicketSuccessProps) => {
   };
 
   const message = ticketData.message?.trim() || 'Ticket generado con exito';
-  const ticket =
-    ticketData.data?.toString().trim() ||
-    `${ticketData.letra || ''}${ticketData.numero ?? ''}`.trim();
+  const ticket = ticketData.ticket || '-';
 
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="ticket-success-dialog-title" sx={dialogStyles}>

@@ -5,20 +5,15 @@ const BASE_URL = '/totem/ticket';
 
 type TicketApiResponse = {
   message?: string | null;
-  data?: string | null;
-  letra?: string | null;
-  numero?: number | string | null;
+  ticket: string;
+  enEspera: number;
 };
 
 const normalizeTicket = (payload: TicketApiResponse): Ticket => {
-  const ticketFromLegacyShape = `${payload.letra ?? ''}${payload.numero ?? ''}`.trim();
-  const resolvedData = payload.data?.toString().trim() || ticketFromLegacyShape || null;
-
   return {
     message: payload.message?.trim() || null,
-    data: resolvedData,
-    letra: payload.letra ?? null,
-    numero: payload.numero ?? null,
+    ticket: payload.ticket,
+    enEspera: payload.enEspera,
   };
 };
 

@@ -2,27 +2,58 @@
 // Requiere que la imagen esté en blanco y negro y no supere 512px de ancho para 80mm
 // Uso: await escposImageFromUrl('/ruta/Corpico_logo.png')
 
-export async function escposImageFromUrl(url: string): Promise<string> {
+export async function escposImageFromUrl(url: string, threshold = 128, dithering = true): Promise<string> {
   // Cargar imagen
   const img = await loadImage(url);
-  // Convertir a canvas blanco y negro
+  // Redimensionar a 240x96 px (30x12 mm a 203dpi)
+  const targetWidth = 240;
+  const targetHeight = 96;
   const canvas = document.createElement('canvas');
-  canvas.width = img.width;
-  canvas.height = img.height;
+  canvas.width = targetWidth;
+  canvas.height = targetHeight;
   const ctx = canvas.getContext('2d');
   if (!ctx) {throw new Error('No se pudo crear contexto de canvas');}
-  ctx.drawImage(img, 0, 0);
-  // Convertir a blanco y negro
-  const imageData = ctx.getImageData(0, 0, img.width, img.height);
-  for (let i = 0; i < imageData.data.length; i += 4) {
-    const avg = (imageData.data[i] + imageData.data[i+1] + imageData.data[i+2]) / 3;
-    const v = avg > 128 ? 255 : 0;
-    imageData.data[i] = imageData.data[i+1] = imageData.data[i+2] = v;
+  ctx.fillStyle = '#FFF';
+  ctx.fillRect(0, 0, targetWidth, targetHeight);
+  ctx.drawImage(img, 0, 0, targetWidth, targetHeight);
+  // Convertir a blanco y negro con dithering opcional
+  let imageData = ctx.getImageData(0, 0, targetWidth, targetHeight);
+  if (dithering) {
+    floydSteinbergDither(imageData, threshold);
+  } else {
+    for (let i = 0; i < imageData.data.length; i += 4) {
+      const avg = (imageData.data[i] + imageData.data[i+1] + imageData.data[i+2]) / 3;
+      const v = avg > threshold ? 255 : 0;
+      imageData.data[i] = imageData.data[i+1] = imageData.data[i+2] = v;
+    }
   }
   ctx.putImageData(imageData, 0, 0);
   // Convertir a ESC/POS
   return escposRasterBitImage(canvas);
 }
+
+// Dithering Floyd-Steinberg
+function floydSteinbergDither(imageData: ImageData, threshold: number) {
+  const w = imageData.width;
+  const h = imageData.height;
+  const data = imageData.data;
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const idx = (y * w + x) * 4;
+      const oldPixel = data[idx];
+      const avg = (data[idx] + data[idx+1] + data[idx+2]) / 3;
+      const newPixel = avg > threshold ? 255 : 0;
+      const error = avg - newPixel;
+      data[idx] = data[idx+1] = data[idx+2] = newPixel;
+      // Distribuir el error
+      if (x + 1 < w) data[idx + 4] += error * 7 / 16;
+      if (x - 1 >= 0 && y + 1 < h) data[idx + 4 * (w - 1) + 4 * w] += error * 3 / 16;
+      if (y + 1 < h) data[idx + 4 * w] += error * 5 / 16;
+      if (x + 1 < w && y + 1 < h) data[idx + 4 * (w + 1) + 4 * w] += error * 1 / 16;
+    }
+  }
+}
+
 
 function loadImage(url: string): Promise<HTMLImageElement> {
   return new Promise((resolve, reject) => {
