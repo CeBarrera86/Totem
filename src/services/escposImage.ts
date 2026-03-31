@@ -11,7 +11,7 @@ export async function escposImageFromUrl(url: string, threshold = 128, dithering
   const canvas = document.createElement('canvas');
   canvas.width = targetWidth;
   canvas.height = targetHeight;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) {throw new Error('No se pudo crear contexto de canvas');}
   ctx.fillStyle = '#FFF';
   ctx.fillRect(0, 0, targetWidth, targetHeight);
@@ -68,7 +68,7 @@ function escposRasterBitImage(canvas: HTMLCanvasElement): string {
   let bytes = '';
   const width = canvas.width;
   const height = canvas.height;
-  const ctx = canvas.getContext('2d');
+  const ctx = canvas.getContext('2d', { willReadFrequently: true });
   if (!ctx) {throw new Error('No se pudo crear contexto de canvas');}
   const imageData = ctx.getImageData(0, 0, width, height).data;
   // Comando: GS v 0
